@@ -5,6 +5,6 @@ const countryController = require("../controllers/countryController");
 
 //route definitions
 router.get("/", countryController.getAll);
-router.get("/:capitalName/", countryController.getByCapitalName);
+router.get("/:capitalName", countryController.getByCapitalName);
 
 module.exports = router;
