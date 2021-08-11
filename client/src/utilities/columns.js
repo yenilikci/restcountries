@@ -18,7 +18,7 @@ export const COLUMNS = [
       <img
         src={props.row.original.flag}
         width={60}
-        alt='Player'
+        alt={props.row.original.name}
       />
     )
   },
