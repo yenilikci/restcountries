@@ -17,7 +17,7 @@ export const COLUMNS = [
     Cell: props => (
       <img
         src={props.row.original.flag}
-        width={60}
+        width={100}
         alt={props.row.original.name}
       />
     )
