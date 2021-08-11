@@ -1,48 +1,80 @@
-import React, { useEffect, useState } from "react";
-import CountryService from "../../services/countryService";
+import React, { useMemo, useEffect, useState } from "react";
+import { useTable, useSortBy, useFilters, useGlobalFilter } from "react-table";
 import { COLUMNS } from "../../utilities/columns";
+import CountryService from "../../services/CountryService";
+import "./table.css";
+import { GlobalFilter } from "././../GlobalFilter/GlobalFilter";
 
-const Table = () => {
-  const [countries, setCountries] = useState([]);
+export const Table = () => {
+  const columns = useMemo(() => COLUMNS, []);
+
+  const [data, setData] = useState([]); // use an empty array as initial value
 
   useEffect(() => {
     let countryService = new CountryService();
-    countryService.getAll().then((res) => {
-      setCountries(res.data.data);
-    });
+    countryService
+      .getAll(
+        "https://restcountries-api-yenilikci.herokuapp.com/api/v1/countries"
+      )
+      .then((res) => {
+        setData(res.data.data); // set the state
+      })
+      .catch((err) => {
+        console.log("err");
+      });
   }, []);
 
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state,
+    setGlobalFilter,
+  } = useTable(
+    {
+      columns,
+      data,
+    },
+    useFilters,
+    useGlobalFilter,
+    useSortBy
+  );
+  const { globalFilter } = state;
+
   return (
-    <div>
-      <div className="card">
-        <table class="table table-striped table-hover shadow">
-          <thead>
-            <tr>
-              {COLUMNS.map((column) => (
-                <th key={column.accesor}>{column.Header}</th>
+    <>
+      <div className="flex-row d-flex justify-content-center">
+        <div className="w-50 mx-5">
+          <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+        </div>
+      </div>
+      <table {...getTableProps()} className="table table-striped shadow">
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {countries.map((country) => (
-              <tr>
-                <td>{country.name}</td>
-                <td>{country.capital}</td>
-                <td>{country.name}</td>
-                <td className="w-25">
-                  <img
-                    src={country.flag}
-                    className="img-fluid img-thumbnail"
-                    alt={country.name}
-                  />
-                </td>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
+                })}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+            );
+          })}
+        </tbody>
+      </table>
+    </>
   );
 };
-
-export default Table;

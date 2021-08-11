@@ -1,18 +1,25 @@
 export const COLUMNS = [
   {
     Header: "Name",
-    accesor: "name",
+    accessor: "name",
   },
   {
     Header: "Capital",
-    accesor: "capital",
+    accessor: "capital",
   },
   {
     Header: "Region",
-    accesor: "region",
+    accessor: "region",
   },
   {
     Header: "Flag",
-    accesor: "flag",
+    accessor: "flag",
+    Cell: props => (
+      <img
+        src={props.row.original.flag}
+        width={60}
+        alt='Player'
+      />
+    )
   },
 ];
