@@ -1,7 +1,6 @@
 import React from "react";
-import "./navbar.css";
-
 import { useDencrypt } from "use-dencrypt-effect";
+import "./navbar.css";
 const values = ["@yenilikci", "countries api client", ":)"];
 const Navbar = () => {
   const { result, dencrypt } = useDencrypt();
@@ -24,7 +23,7 @@ const Navbar = () => {
           <li className="nav-item m-1 btn btn-light">Home</li>
           <li className="nav-item m-1 btn btn-light">About</li>
         </ul>
-        <span className="navbar-text">{result}</span>
+        <span class="navbar-text">{result}</span>
       </nav>
     </>
   );

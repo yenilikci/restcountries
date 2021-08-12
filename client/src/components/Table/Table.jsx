@@ -4,7 +4,10 @@ import { COLUMNS } from "../../utilities/columns";
 import CountryService from "../../services/CountryService";
 import { GlobalFilter } from "././../GlobalFilter/GlobalFilter";
 import LazyLoad from "react-lazyload";
+import SkeletonLoader from "../SkeletonLoader/SkeletonLoader";
+import { toast } from "react-toastify";
 import "./table.css";
+import CapitalFilter from "../CapitalFilter/CapitalFilter";
 
 export const Table = () => {
   const columns = useMemo(() => COLUMNS, []);
@@ -19,6 +22,7 @@ export const Table = () => {
       )
       .then((res) => {
         setData(res.data.data); // set the state
+        toast(`🎌 ${res.data.message}`);
       })
       .catch((err) => {
         console.log("err");
@@ -49,6 +53,9 @@ export const Table = () => {
       <div className="flex-row d-flex justify-content-center">
         <div className="w-50 mx-5">
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+        </div>
+        <div className="w-50 mx-5">
+          <CapitalFilter data={data} set={setData} />
         </div>
       </div>
       <table {...getTableProps()} className="table table-striped shadow">
@@ -85,7 +92,6 @@ export const Table = () => {
                       )
                     ) : (
                       <svg
-                        className="text-info mx-2"
                         xmlns="http://www.w3.org/2000/svg"
                         width="20"
                         height="20"
@@ -103,26 +109,38 @@ export const Table = () => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>
-                      <LazyLoad
-                        once={true}
-                        placeholder="Loading..."
-                        key={data.flag}
-                      >
-                        {cell.render("Cell")}
-                      </LazyLoad>
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {rows.length > 10
+            ? rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>
+                          <LazyLoad
+                            placeholder={<SkeletonLoader />}
+                            key={data.flag}
+                          >
+                            {cell.render("Cell")}
+                          </LazyLoad>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })
+            : rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
         </tbody>
       </table>
     </>
