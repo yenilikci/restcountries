@@ -49,3 +49,96 @@
 .alert-modal-face {
   font-size: 36px;
 }
+
+.table-responsive {
+  min-height: 0.01%;
+  overflow-x: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    width: 100%;
+    margin-bottom: 15px;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+  }
+  .table-responsive > .table {
+    margin-bottom: 0;
+  }
+  .table-responsive > .table > thead > tr > th,
+  .table-responsive > .table > tbody > tr > th,
+  .table-responsive > .table > tfoot > tr > th,
+  .table-responsive > .table > thead > tr > td,
+  .table-responsive > .table > tbody > tr > td,
+  .table-responsive > .table > tfoot > tr > td {
+    white-space: nowrap;
+  }
+  .filtering-panel-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #593c8f;
+  }
+
+  .table-thead {
+    border-radius: 10px;
+  }
+
+  .table-head {
+    font-size: 12px;
+    padding: 5px;
+    background-color: #593c8f;
+    color: #fff;
+  }
+
+  .table-row {
+    font-size: 9px;
+    background-color: #f3ca40;
+    border-bottom: 2px solid #593c8f;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+  }
+
+  .bg-maize {
+    background-color: #f3ca40;
+  }
+
+  .text-maize {
+    color: #f3ca40;
+    font-size: 10px;
+  }
+  .alert-modal .modal-title {
+    font-size: 14px;
+  }
+
+  .alert-modal .modal-body {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .alert-modal-face {
+    font-size: 18px;
+  }
+
+  .capital-filter {
+    background-color: #171738;
+    font-size: 10px;
+  }
+
+  .capital-input {
+    font-size: 10px;
+    border: 2px solid #171738;
+    border-radius: 5px;
+  }
+  .global-filter {
+    background-color: #171738;
+    font-size: 10px;
+  }
+
+  .global-input {
+    font-size: 10px;
+    border: 2px solid #171738;
+    border-radius: 5px;
+  }
+}

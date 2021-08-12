@@ -20,3 +20,28 @@
   font-size: 20px;
   color: #fff;
 }
+
+@media screen and (max-width: 767px) {
+  .btn {
+    height: 30px;
+    display: flexbox;
+  }
+  .btn-list {
+    background-color: #fed99b;
+    font-size: 10px;
+    font-weight: 500;
+    color: #593c8f;
+  }
+
+  .btn-about {
+    background-color: #fed99b;
+    font-size: 10px;
+    font-weight: 500;
+    color: #593c8f;
+  }
+
+  .dencrypt-effect {
+    font-size: 10px;
+    color: #fff;
+  }
+}

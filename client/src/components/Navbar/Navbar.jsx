@@ -21,7 +21,7 @@ const Navbar = () => {
   return (
     <>
       <nav className="d-flex justify-content-between navbar navbar-expand-sm my-3 shadow rounded navbar-bg">
-        <ul className="navbar-nav">
+        <ul className="navbar-nav mr-auto">
           <li className="nav-item m-1">
             <NavLink className="btn btn-lg btn-list " to="/">
               List

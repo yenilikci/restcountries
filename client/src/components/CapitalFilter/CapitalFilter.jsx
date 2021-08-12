@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CountryService from "../../services/CountryService";
+import CountryService from "../../services/countryService";
 import "./capitalFilter.css";
 
 const CapitalFilter = (props) => {

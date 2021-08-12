@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { useTable, useSortBy, useFilters, useGlobalFilter } from "react-table";
 import { COLUMNS } from "../../utilities/columns";
-import CountryService from "../../services/CountryService";
+import CountryService from "../../services/countryService";
 import { GlobalFilter } from "././../GlobalFilter/GlobalFilter";
 import LazyLoad from "react-lazyload";
 import SkeletonLoader from "../SkeletonLoader/SkeletonLoader";
@@ -56,20 +56,21 @@ export const Table = () => {
         <div className="modal-header border-bottom-0">
           <h5 className="modal-title filtering-panel-text">Filtering Panel</h5>
         </div>
-        <div className="modal-footer flex-column border-top-0">
-          <div className="d-flex flex-row">
-            <div className="col-sm-6">
-              <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-            </div>
-            <div className="col-sm-6">
-              <CapitalFilter data={data} set={setData} />
-            </div>
+        <div className="row p-4">
+          <div className="col-sm-6 filter">
+            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+          </div>
+          <div className="col-sm-6 filter">
+            <CapitalFilter data={data} set={setData} />
           </div>
         </div>
       </div>
 
       {rows.length !== 0 ? (
-        <table {...getTableProps()} className="table shadow">
+        <table
+          {...getTableProps()}
+          className="table shadow table-responsive w-100 d-block d-md-table"
+        >
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
