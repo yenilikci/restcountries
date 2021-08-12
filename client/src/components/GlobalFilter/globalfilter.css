@@ -1,0 +1,10 @@
+.global-filter {
+  background-color: #171738;
+  font-size: 20px;
+}
+
+.global-input {
+  font-size: 20px;
+  border: 2px solid #171738;
+  border-radius: 5px;
+}

@@ -18,6 +18,7 @@ export const COLUMNS = [
       <img
         src={props.row.original.flag}
         width={100}
+        style={{border:'3px solid #000'}}
         alt={props.row.original.name}
       />
     )

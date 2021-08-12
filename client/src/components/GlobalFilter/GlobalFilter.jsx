@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAsyncDebounce } from "react-table";
+import "./globalfilter.css";
 
 export const GlobalFilter = ({ filter, setFilter }) => {
   const [value, setValue] = useState(filter);
@@ -8,11 +9,12 @@ export const GlobalFilter = ({ filter, setFilter }) => {
   }, 500);
   return (
     <div className="input-group mb-3">
-      <span className="input-group-text bg-info text-white">
+      <span className="input-group-text global-filter text-white">
         Global Search:{" "}
       </span>
       <input
-        className="form-control"
+        className="form-control global-input"
+        placeholder="for all fields"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);

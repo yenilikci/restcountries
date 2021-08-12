@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CountryService from "../../services/CountryService";
+import "./capitalFilter.css";
 
 const CapitalFilter = (props) => {
   const [capitalNameFiltered, setCapitalNameFiltered] = useState("");
@@ -13,11 +14,12 @@ const CapitalFilter = (props) => {
 
   return (
     <div className="input-group mb-3">
-      <span className="input-group-text bg-info text-white">
+      <span className="input-group-text text-white capital-filter">
         CapitalName Search:{" "}
       </span>
       <input
-        className="form-control"
+        className="form-control capital-input"
+        placeholder="for capital name"
         onChange={(e) => setCapitalNameFiltered(e.target.value)}
       />
     </div>

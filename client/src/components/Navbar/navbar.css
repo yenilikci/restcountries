@@ -1,3 +1,22 @@
 .navbar-bg {
-  background-color: #e3f2fd;
+  background-color: #db5461;
+}
+
+.btn-list {
+  background-color: #fed99b;
+  font-size: 20px;
+  font-weight: 500;
+  color: #593c8f;
+}
+
+.btn-about {
+  background-color: #fed99b;
+  font-size: 20px;
+  font-weight: 500;
+  color: #593c8f;
+}
+
+.dencrypt-effect {
+  font-size: 20px;
+  color: #fff;
 }

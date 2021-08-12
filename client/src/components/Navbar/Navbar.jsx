@@ -1,6 +1,8 @@
 import React from "react";
 import { useDencrypt } from "use-dencrypt-effect";
+import { NavLink } from "react-router-dom";
 import "./navbar.css";
+
 const values = ["@yenilikci", "countries api client", ":)"];
 const Navbar = () => {
   const { result, dencrypt } = useDencrypt();
@@ -18,12 +20,20 @@ const Navbar = () => {
   }, []);
   return (
     <>
-      <nav className="d-flex justify-content-between navbar navbar-expand-sm bg-info navbar-dark my-3 shadow rounded">
+      <nav className="d-flex justify-content-between navbar navbar-expand-sm my-3 shadow rounded navbar-bg">
         <ul className="navbar-nav">
-          <li className="nav-item m-1 btn btn-light">Home</li>
-          <li className="nav-item m-1 btn btn-light">About</li>
+          <li className="nav-item m-1">
+            <NavLink className="btn btn-lg btn-list " to="/">
+              List
+            </NavLink>
+          </li>
+          <li className="nav-item m-1">
+            <NavLink className="btn btn-lg btn-about" to="/about">
+              About
+            </NavLink>
+          </li>
         </ul>
-        <span class="navbar-text">{result}</span>
+        <span class="navbar-text dencrypt-effect">{result}</span>
       </nav>
     </>
   );

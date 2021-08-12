@@ -1,18 +1,24 @@
 import Navbar from "./components/Navbar/Navbar";
 import { Table } from "./components/Table/Table";
+import { About } from "./components/About/About";
 import { ToastContainer } from "react-toastify";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
+import Head from "./components/Head/Head";
 
 function App() {
   return (
-    <div className="App container">
-      <ToastContainer position="bottom-right" />
-      <h3 className="d-flex justify-content-center my-2 card p-3 shadow">
-        React JS - Client
-      </h3>
-      <Navbar />
-      <Table />
-    </div>
+    <BrowserRouter>
+      <div className="App container">
+        <ToastContainer position="bottom-right" />
+        <Head />
+        <Navbar />
+        <Switch>
+          <Route path="/" exact component={Table} />
+          <Route path="/about" component={About} />
+        </Switch>
+      </div>
+    </BrowserRouter>
   );
 }
 

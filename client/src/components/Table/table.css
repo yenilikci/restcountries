@@ -1,0 +1,51 @@
+.filtering-modal {
+  background-color: #ffd9ce;
+}
+
+.filtering-panel-text {
+  font-size: 28px;
+  font-weight: 700;
+  color: #593c8f;
+}
+
+.table-thead {
+  border-radius: 20px;
+}
+
+.table-head {
+  font-size: 24px;
+  padding: 10px;
+  background-color: #593c8f;
+  color: #fff;
+}
+
+.table-row {
+  font-size: 18px;
+  background-color: #f3ca40;
+  border-bottom: 2px solid #593c8f;
+  font-weight: 700;
+  color: #000;
+  text-align: center;
+}
+
+.bg-maize {
+  background-color: #f3ca40;
+}
+
+.text-maize {
+  color: #f3ca40;
+  font-size: 20px;
+}
+
+.alert-modal .modal-title {
+  font-size: 28px;
+}
+
+.alert-modal .modal-body {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.alert-modal-face {
+  font-size: 36px;
+}
