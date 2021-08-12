@@ -33,7 +33,7 @@ const Navbar = () => {
             </NavLink>
           </li>
         </ul>
-        <span class="navbar-text dencrypt-effect">{result}</span>
+        <span className="navbar-text dencrypt-effect">{result}</span>
       </nav>
     </>
   );

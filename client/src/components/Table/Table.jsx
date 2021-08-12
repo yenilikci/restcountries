@@ -52,11 +52,11 @@ export const Table = () => {
 
   return (
     <>
-      <div class="modal-content shadow my-2 border-0 filtering-modal">
-        <div class="modal-header border-bottom-0">
-          <h5 class="modal-title filtering-panel-text">Filtering Panel</h5>
+      <div className="modal-content shadow my-2 border-0 filtering-modal">
+        <div className="modal-header border-bottom-0">
+          <h5 className="modal-title filtering-panel-text">Filtering Panel</h5>
         </div>
-        <div class="modal-footer flex-column border-top-0">
+        <div className="modal-footer flex-column border-top-0">
           <div className="d-flex flex-row">
             <div className="col-sm-6">
               <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
