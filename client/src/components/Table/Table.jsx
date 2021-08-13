@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from "react";
-import { useTable, useSortBy, useFilters, useGlobalFilter } from "react-table";
+import { useTable, useSortBy, useGlobalFilter } from "react-table";
 import { COLUMNS } from "../../utilities/columns";
 import CountryService from "../../services/countryService";
 import { GlobalFilter } from "././../GlobalFilter/GlobalFilter";
@@ -7,6 +7,9 @@ import LazyLoad from "react-lazyload";
 import SkeletonLoader from "../SkeletonLoader/SkeletonLoader";
 import { toast } from "react-toastify";
 import CapitalFilter from "../CapitalFilter/CapitalFilter";
+import { initialStateSort } from "../../helpers/sortData";
+import NewsAboutModal from "../NewsAboutModal/NewsAboutModal";
+import AlertModal from "../AlertModal/AlertModal";
 import "./table.css";
 
 export const Table = () => {
@@ -14,22 +17,14 @@ export const Table = () => {
 
   // use an empty array as initial value
   const [data, setData] = useState([]);
+  //capital state
+  const [capital, setCapital] = useState("");
 
-  useEffect(() => {
-    let countryService = new CountryService();
-    countryService
-      .getAll(
-        "https://restcountries-api-yenilikci.herokuapp.com/api/v1/countries"
-      )
-      .then((res) => {
-        // set the state
-        setData(res.data.data);
-        toast(`🎌 ${res.data.message}`);
-      })
-      .catch((err) => {
-        console.log("err");
-      });
-  }, []);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const toggleModal = () => {
+    setModalIsOpen(!modalIsOpen);
+  };
 
   const {
     getTableProps,
@@ -43,12 +38,28 @@ export const Table = () => {
     {
       columns,
       data,
+      initialState: initialStateSort,
     },
-    useFilters,
     useGlobalFilter,
     useSortBy
   );
   const { globalFilter } = state;
+
+  useEffect(() => {
+    let countryService = new CountryService();
+    countryService
+      .getAll(
+        "https://restcountries-api-yenilikci.herokuapp.com/api/v1/countries"
+      )
+      .then((res) => {
+        // set the state
+        setData(res.data.data);
+        toast(`🎌 ${res.data.message}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
@@ -58,11 +69,20 @@ export const Table = () => {
         </div>
         <div className="row p-4">
           <div className="col-sm-6 filter">
-            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+            <GlobalFilter
+              filter={globalFilter}
+              setFilter={setGlobalFilter}
+              set={setData}
+              setCapital={setCapital}
+            />
           </div>
           <div className="col-sm-6 filter">
-            <CapitalFilter data={data} set={setData} />
+            <CapitalFilter data={capital} datas={setCapital} set={setData} />
           </div>
+        </div>
+        <div className="card panel shadow p-2">
+          Number of records: {rows.length}
+          <NewsAboutModal toggleModal={toggleModal} modalIsOpen={modalIsOpen} />
         </div>
       </div>
 
@@ -161,19 +181,7 @@ export const Table = () => {
           </tbody>
         </table>
       ) : (
-        <div className="alert-modal">
-          <div className="modal-content">
-            <div className="modal-header bg-danger">
-              <h5 className="modal-title text-white">Warning!</h5>
-            </div>
-            <div className="modal-body">
-              <p>
-                <span className="alert-modal-face">🙄</span> No data found
-                matching your search parameters
-              </p>
-            </div>
-          </div>
-        </div>
+        <AlertModal />
       )}
     </>
   );

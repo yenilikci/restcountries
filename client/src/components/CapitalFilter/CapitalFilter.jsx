@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { convertCh } from "../../helpers/trChar";
 import CountryService from "../../services/countryService";
 import "./capitalFilter.css";
 
 const CapitalFilter = (props) => {
-  const [capitalNameFiltered, setCapitalNameFiltered] = useState("");
-
   useEffect(() => {
     let countryService = new CountryService();
     countryService
-      .getByCapitalName(capitalNameFiltered)
+      .getByCapitalName(props.data)
       .then((res) => props.set(res.data.data));
-  }, [capitalNameFiltered]);
+  }, [props.data]);
 
   return (
     <div className="input-group mb-3">
@@ -20,7 +19,10 @@ const CapitalFilter = (props) => {
       <input
         className="form-control capital-input"
         placeholder="for capital name"
-        onChange={(e) => setCapitalNameFiltered(e.target.value)}
+        onChange={(e) => {
+          props.datas(convertCh(e.target.value));
+        }}
+        value={props.data}
       />
     </div>
   );
