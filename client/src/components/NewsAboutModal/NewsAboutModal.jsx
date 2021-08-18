@@ -1,13 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import {
-  atomOneLight,
-  paraisoLight,
-  solarizedLight,
-  CopyBlock,
-  CodeBlock,
-} from "react-code-blocks";
-import { convertCh } from "../../helpers/trChar";
+import { atomOneLight, CopyBlock } from "react-code-blocks";
 import "./newsAboutModal.css";
 
 const NewsAboutModal = ({ toggleModal, modalIsOpen }) => {
@@ -56,9 +49,9 @@ const NewsAboutModal = ({ toggleModal, modalIsOpen }) => {
           >
             <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828l.645-1.937zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.734 1.734 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.734 1.734 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.734 1.734 0 0 0 3.407 2.31l.387-1.162zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L10.863.1z" />
           </svg>
-          l
         </div>
         <h3>About news</h3>
+        <h4>18.08.2021</h4>
         <p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -73,12 +66,12 @@ const NewsAboutModal = ({ toggleModal, modalIsOpen }) => {
               d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM11 5a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 11 5zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"
             />
           </svg>
-          Added fix for character "İ" in search section{" "}
+          Added .toLocaleLowerCase("tr") for search inputs parameters{" "}
         </p>
         <CopyBlock
-          text={convertCh}
+          text=" .toLocaleLowerCase('tr')"
           language="javascript"
-          showLineNumbers={true}
+          showLineNumbers={false}
           theme={atomOneLight}
           codeBlock
         />
@@ -96,13 +89,18 @@ const NewsAboutModal = ({ toggleModal, modalIsOpen }) => {
               d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM11 5a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 11 5zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"
             />
           </svg>
-          useSortBy initialState initialized sorted by name{" "}
+          Searched all json data, added new hooks{" "}
         </p>
         <CopyBlock
-          text="export const initialStateSort = { sortBy: [{id:'name', desc:false}] };"
+          text="res.data.data.forEach((country) => {
+            let localizedData = JSON.stringify(country).toLocaleLowerCase('tr');
+            localizedData.includes(globalParam.toLocaleLowerCase('tr'))
+              ? array.push(country)
+              : null;
+          });"
           language="javascript"
-          showLineNumbers={true}
-          theme={paraisoLight}
+          showLineNumbers={false}
+          theme={atomOneLight}
           codeBlock
         />
         <p>
@@ -119,14 +117,71 @@ const NewsAboutModal = ({ toggleModal, modalIsOpen }) => {
               d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM11 5a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 11 5zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"
             />
           </svg>
+          Added data count and index control to columns loaded with lazyload,
+          skeleton issue during sorting fixed
+        </p>
+        <CopyBlock
+          text=" {countries.map((country, index) => (
+            <tr className='table-row' key={country.numericCode}>
+              {/* if there is a lot of data */}
+              {countries.length > 100 && index > 10 ? ( ...  "
+          language="javascript"
+          showLineNumbers={false}
+          theme={atomOneLight}
+          codeBlock
+        />
+        <hr className="bg-white" />
+        <h4>16.08.2021</h4>
+        <p>
+          {" "}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="bi bi-node-plus mr-2"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM11 5a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 11 5zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"
+            />
+          </svg>
+          Added fix for character "İ" in search section{" "}
+        </p>
+        <p>
+          {" "}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="bi bi-node-plus mr-2"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM11 5a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 11 5zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"
+            />
+          </svg>
+          useSortBy initialState initialized sorted by name{" "}
+        </p>
+        <p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="bi bi-node-plus mr-2"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M11 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6.025 7.5a5 5 0 1 1 0 1H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025zM11 5a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 11 5zM1.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"
+            />
+          </svg>
           Table.jsx content simplified{" "}
         </p>
-        <CodeBlock
-          text="    AlertModal.jsx   |   NewsAboutModal.jsx    "
-          language="text"
-          showLineNumbers={false}
-          theme={solarizedLight}
-        />
         <p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -143,33 +198,6 @@ const NewsAboutModal = ({ toggleModal, modalIsOpen }) => {
           </svg>
           Data fetching repeated when global filter is triggered{" "}
         </p>
-        <CodeBlock
-          text="const [value, setValue] = useState(filter);
-          useEffect(() => { setCapital('') ... ,[value]}"
-          language="text"
-          showLineNumbers={false}
-          theme={solarizedLight}
-        />
-        <div className="d-flex justify-content-center align-items-center">
-          <a
-            href="https://react-table.tanstack.com/docs/api/useSortBy"
-            className="btn bg-light mt-2 mr-2"
-          >
-            <button className="btn">About useSortBy</button>
-          </a>
-          <a
-            href="https://github.com/yenilikci/restcountries"
-            className="btn bg-dark mr-2 mt-2"
-          >
-            <button className="btn text-white">Source Code</button>
-          </a>
-          <a
-            href="https://react-table.tanstack.com/docs/api/useGlobalFilter"
-            className="btn bg-light mt-2"
-          >
-            <button className="btn">About useGlobalFilter</button>
-          </a>
-        </div>
       </Modal>
     </>
   );

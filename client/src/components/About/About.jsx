@@ -1,7 +1,7 @@
 import React from "react";
 import "./about.css";
 
-export const About = () => {
+const About = () => {
   return (
     <div>
       <div className="card">
@@ -41,3 +41,5 @@ export const About = () => {
     </div>
   );
 };
+
+export default About;

@@ -1,4 +1,4 @@
-export const COLUMNS = [
+const COLUMNS = [
   {
     Header: "Name",
     accessor: "name",
@@ -14,13 +14,7 @@ export const COLUMNS = [
   {
     Header: "Flag",
     accessor: "flag",
-    Cell: props => (
-      <img
-        src={props.row.original.flag}
-        width={100}
-        style={{border:'3px solid #000'}}
-        alt={props.row.original.name}
-      />
-    )
   },
 ];
+
+export default COLUMNS;

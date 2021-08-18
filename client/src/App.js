@@ -1,6 +1,6 @@
 import Navbar from "./components/Navbar/Navbar";
-import { Table } from "./components/Table/Table";
-import { About } from "./components/About/About";
+import Table from "./components/Table/Table";
+import About from "./components/About/About";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";

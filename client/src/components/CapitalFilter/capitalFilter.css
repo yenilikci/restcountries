@@ -4,7 +4,8 @@
 }
 
 .capital-input {
-  font-size: 20px;
+  font-size: 25px;
+  height: 70px;
   border: 2px solid #171738;
   border-radius: 5px;
 }

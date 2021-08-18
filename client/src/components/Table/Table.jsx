@@ -1,188 +1,242 @@
-import React, { useMemo, useEffect, useState } from "react";
-import { useTable, useSortBy, useGlobalFilter } from "react-table";
-import { COLUMNS } from "../../utilities/columns";
+import React, { useEffect, useState } from "react";
+import COLUMNS from "../../utilities/columns";
 import CountryService from "../../services/countryService";
-import { GlobalFilter } from "././../GlobalFilter/GlobalFilter";
+import { toast } from "react-toastify";
 import LazyLoad from "react-lazyload";
 import SkeletonLoader from "../SkeletonLoader/SkeletonLoader";
-import { toast } from "react-toastify";
-import CapitalFilter from "../CapitalFilter/CapitalFilter";
-import { initialStateSort } from "../../helpers/sortData";
 import NewsAboutModal from "../NewsAboutModal/NewsAboutModal";
 import AlertModal from "../AlertModal/AlertModal";
+import "../GlobalFilter/globalfilter.css";
+import "../CapitalFilter/capitalFilter.css";
 import "./table.css";
 
-export const Table = () => {
-  const columns = useMemo(() => COLUMNS, []);
-
-  // use an empty array as initial value
-  const [data, setData] = useState([]);
-  //capital state
-  const [capital, setCapital] = useState("");
-
+const Table = () => {
+  //state definitions
+  const [countries, setCountries] = useState([]);
+  const [globalParam, setGlobalParam] = useState("");
+  const [capitalParam, setCapitalParam] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [sortIsAscGlobal, setSortIsAscGlobal] = useState(true);
+  const [sortIsAscCapital, setSortIsAscCapital] = useState(true);
 
   const toggleModal = () => {
     setModalIsOpen(!modalIsOpen);
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    state,
-    setGlobalFilter,
-  } = useTable(
-    {
-      columns,
-      data,
-      initialState: initialStateSort,
-    },
-    useGlobalFilter,
-    useSortBy
-  );
-  const { globalFilter } = state;
+  const sort = (data, sortIsAsc) => {
+    if (sortIsAsc) {
+      data.sort((first, second) => {
+        if (first.name < second.name) {
+          return -1;
+        } else if (first.name > second.name) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+      return data;
+    } else {
+      data.sort((first, second) => {
+        if (first.name > second.name) {
+          return -1;
+        } else if (first.name < second.name) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+      return data;
+    }
+  };
 
+  const sortMessage = (sortIsAsc, param) => {
+    param ? (param = ` with param ${param}`) : "";
+    if (sortIsAsc) {
+      toast(`🎌 data sorted "A->Z"` + param);
+    } else {
+      toast(`🎌 data sorted "Z->A"` + param);
+    }
+  };
+
+  //first side effect
   useEffect(() => {
     let countryService = new CountryService();
-    countryService
-      .getAll(
-        "https://restcountries-api-yenilikci.herokuapp.com/api/v1/countries"
-      )
-      .then((res) => {
-        // set the state
-        setData(res.data.data);
-        toast(`🎌 ${res.data.message}`);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    countryService.getAll().then((res) => {
+      sort(res.data.data, true);
+      setCountries(res.data.data);
+      toast(`🎌 ${res.data.message}`);
+    });
   }, []);
 
+  //capitalParam update effect
+  useEffect(() => {
+    let countryService = new CountryService();
+    countryService.getByCapitalName(capitalParam).then((res) => {
+      setGlobalParam("");
+      sort(res.data.data, sortIsAscCapital);
+      if (capitalParam.length != 0) {
+        sortMessage(sortIsAscCapital, capitalParam);
+      }
+      setCountries(res.data.data);
+    });
+  }, [capitalParam, sortIsAscCapital]);
+
+  //globalParam update effect
+  useEffect(() => {
+    if (globalParam.length != 0) {
+      let countryService = new CountryService();
+      countryService.getAll().then((res) => {
+        const array = [];
+        setCapitalParam("");
+        res.data.data.forEach((country) => {
+          let localizedData = JSON.stringify(country).toLocaleLowerCase("tr");
+          localizedData.includes(globalParam.toLocaleLowerCase("tr"))
+            ? array.push(country)
+            : null;
+          console.log(array);
+        });
+        sort(array, sortIsAscGlobal);
+        sortMessage(sortIsAscGlobal, globalParam);
+        setCountries(array);
+      });
+    } else {
+      let countryService = new CountryService();
+      countryService.getAll().then((res) => {
+        sort(res.data.data, sortIsAscGlobal);
+        sortMessage(sortIsAscGlobal, globalParam);
+        setCountries(res.data.data);
+      });
+    }
+  }, [globalParam, sortIsAscGlobal]);
+
   return (
-    <>
+    <div>
       <div className="modal-content shadow my-2 border-0 filtering-modal">
         <div className="modal-header border-bottom-0">
           <h5 className="modal-title filtering-panel-text">Filtering Panel</h5>
         </div>
         <div className="row p-4">
           <div className="col-sm-6 filter">
-            <GlobalFilter
-              filter={globalFilter}
-              setFilter={setGlobalFilter}
-              set={setData}
-              setCapital={setCapital}
-            />
+            <div className="input-group mb-3">
+              <span className="input-group-text global-filter text-white">
+                Global Search:
+              </span>
+              <input
+                className="form-control global-input"
+                placeholder="for all fields"
+                onChange={(e) => setGlobalParam(e.target.value.trim())}
+                value={globalParam}
+              />
+              <button
+                className="btn-custom"
+                onClick={() => setSortIsAscGlobal(!sortIsAscGlobal)}
+              >
+                {sortIsAscGlobal ? (
+                  <i className="fas fa-sort-alpha-down"></i>
+                ) : (
+                  <i className="fas fa-sort-alpha-down-alt"></i>
+                )}
+              </button>
+            </div>
           </div>
           <div className="col-sm-6 filter">
-            <CapitalFilter data={capital} datas={setCapital} set={setData} />
+            <div className="input-group mb-3">
+              <span className="input-group-text text-white capital-filter">
+                Capital Search:{" "}
+              </span>
+              <input
+                className="form-control capital-input"
+                placeholder="for capital name"
+                onChange={(e) => setCapitalParam(e.target.value.trim())}
+                value={capitalParam}
+              />
+              <button
+                className="btn-custom"
+                onClick={() => setSortIsAscCapital(!sortIsAscCapital)}
+              >
+                {sortIsAscCapital ? (
+                  <i className="fas fa-sort-alpha-down"></i>
+                ) : (
+                  <i className="fas fa-sort-alpha-down-alt"></i>
+                )}
+              </button>
+            </div>
           </div>
         </div>
         <div className="card panel shadow p-2">
-          Number of records: {rows.length}
           <NewsAboutModal toggleModal={toggleModal} modalIsOpen={modalIsOpen} />
         </div>
       </div>
 
-      {rows.length !== 0 ? (
-        <table
-          {...getTableProps()}
-          className="table shadow table-responsive w-100 d-block d-md-table"
-        >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    className="table-head"
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                  >
-                    {column.render("Header")}
-                    <span>
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            fill="currentColor"
-                            className="bi bi-sort-down mx-2 text-maize"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z" />
-                          </svg>
-                        ) : (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            fill="currentColor"
-                            className="bi bi-sort-up-alt mx-2 text-maize"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M3.5 13.5a.5.5 0 0 1-1 0V4.707L1.354 5.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 4.707V13.5zm4-9.5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1h-3zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1h-5zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5z" />
-                          </svg>
-                        )
-                      ) : (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="25"
-                          height="25"
-                          fill="currentColor"
-                          className="bi bi-funnel-fill mx-2 text-maize"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
-                        </svg>
-                      )}
-                    </span>
-                  </th>
-                ))}
-              </tr>
+      <table className="table shadow table-responsive w-100 d-block d-md-table">
+        <thead>
+          <tr>
+            {COLUMNS.map((column) => (
+              <th className="table-head" scope="col" key={column.accessor}>
+                {column.Header}
+              </th>
             ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.length > 10
-              ? rows.map((row) => {
-                  prepareRow(row);
-                  return (
-                    <tr className="table-row" {...row.getRowProps()}>
-                      {row.cells.map((cell) => {
-                        return (
-                          <td {...cell.getCellProps()}>
-                            <LazyLoad
-                              placeholder={<SkeletonLoader />}
-                              key={data.flag}
-                            >
-                              {cell.render("Cell")}
-                            </LazyLoad>
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })
-              : rows.map((row) => {
-                  prepareRow(row);
-                  return (
-                    <tr className="table-row" {...row.getRowProps()}>
-                      {row.cells.map((cell) => {
-                        return (
-                          <td {...cell.getCellProps()}>
-                            {cell.render("Cell")}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-          </tbody>
-        </table>
-      ) : (
-        <AlertModal />
-      )}
-    </>
+          </tr>
+        </thead>
+        <tbody>
+          {countries.map((country, index) => (
+            <tr className="table-row" key={country.numericCode}>
+              {/* if there is a lot of data */}
+              {countries.length > 100 && index > 10 ? (
+                <>
+                  <td>
+                    <LazyLoad
+                      placeholder={<SkeletonLoader />}
+                      key={country.numericCode}
+                    >
+                      {country.name}
+                    </LazyLoad>
+                  </td>
+
+                  <td>
+                    <LazyLoad
+                      placeholder={<SkeletonLoader />}
+                      key={country.numericCode}
+                    >
+                      {country.capital}
+                    </LazyLoad>
+                  </td>
+
+                  <td>
+                    <LazyLoad
+                      placeholder={<SkeletonLoader />}
+                      key={country.numericCode}
+                    >
+                      {country.region}
+                    </LazyLoad>
+                  </td>
+
+                  <td>
+                    <LazyLoad
+                      placeholder={<SkeletonLoader />}
+                      key={country.numericCode}
+                    >
+                      <img src={country.flag} style={{ width: 70 }} />
+                    </LazyLoad>
+                  </td>
+                </>
+              ) : (
+                <>
+                  <td>{country.name}</td>
+                  <td>{country.capital}</td>
+                  <td>{country.region}</td>
+                  <td>
+                    <img src={country.flag} style={{ width: 70 }} />
+                  </td>
+                </>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {countries.length == 0 ? <AlertModal /> : null}
+    </div>
   );
 };
+
+export default Table;

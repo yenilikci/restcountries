@@ -13,14 +13,14 @@
 }
 
 .table-head {
-  font-size: 18px;
+  font-size: 24px;
   padding: 10px;
   background-color: #593c8f;
   color: #fff;
 }
 
 .table-row {
-  font-size: 16px;
+  font-size: 18px;
   background-color: #f3ca40;
   border-bottom: 2px solid #593c8f;
   font-weight: 700;
@@ -144,14 +144,3 @@
     border-radius: 5px;
   }
 }
-
-.btn-custom {
-  color: #fff;
-  border: none;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  background: #171738;
-  padding: 20px;
-  font-weight: 500;
-}
-

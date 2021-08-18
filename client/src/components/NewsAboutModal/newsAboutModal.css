@@ -1,5 +1,5 @@
 .news-modal {
-  max-width: 767px;
+  max-width: 750px;
   background-color: #171738;
   color: #fff;
   box-shadow: 0 0 15px 0 rgba(rgb(0, 0, 0), 0.8);
@@ -10,15 +10,21 @@
 }
 
 .news-modal h3 {
-  font-size: 30px;
-  margin-bottom: 20px;
-  margin-top: 10px;
+  font-size: 20px;
+  margin-bottom: 15px;
+  margin-top: 7px;
+}
+
+.news-modal h4 {
+  font-size: 14px;
+  margin-bottom: 15px;
+  margin-top: 7px;
 }
 
 .news-modal p {
-  font-size: 20px;
+  font-size: 12px;
   font-weight: 200;
-  margin-top: 15px;
+  margin: 5px;
 }
 
 .news-modal-overlay {
